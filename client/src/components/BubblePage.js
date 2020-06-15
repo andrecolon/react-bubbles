@@ -28,7 +28,7 @@ getColors()//useEffect is crying for a dependancy value ..oh yeah?!
 
   return (
     <>
-      <ColorList colors={colorList} updateColors={setColorList} />
+      <ColorList colors={colorList} updateColors={setColorList}  />
       <Bubbles colors={colorList} />
     </>
   );

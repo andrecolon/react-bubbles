@@ -19,12 +19,12 @@ function App() {
                 <Link to="/login">Login</Link>
               </li>
               <li>
-                <Link to="/protected">Bubbles Page</Link>
+                <Link to="/Bubbles">Bubbles Page</Link>
               </li>
             </ul>
         </nav>
         <Switch>
-          <PrivateRoute exact path="/protected" component={BubblesPage} />
+          <PrivateRoute exact path="/Bubbles" component={BubblesPage} />
           <Route path="/login" component={Login}/>
           <Route component={Login} />
         </Switch>
