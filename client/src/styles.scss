@@ -19,6 +19,50 @@ body,
     height: 100%;
   }
 }
+nav {
+    display: grid;
+       ul {
+      background: #455c71;
+          li {
+        display: inline-block;
+        margin: 10px;
+        font-weight: bolder;
+          a:link, a:hover, a:active, a:visited  {
+            color: blanchedalmond;
+            text-decoration: none;
+          }
+  }
+}
+}
+
+
+.login-form{
+  padding: 20px;
+  margin: 10px;
+  position: relative;
+  left: 10px;
+  background: beige;
+  display: block;
+    input{
+      padding: 10px;
+      margin: 5px;
+      color: #444444;
+    }
+    button {
+    padding: 10px;
+    background: darkseagreen;
+    color: white;
+    font-weight: bold;
+    
+      &:hover {
+      background:white ;
+      color:darkseagreen ;
+      border: 1px solid #999;
+                    cursor: pointer;
+      }
+}
+
+}
 
 .spacer {
   height: 100%;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useParams, useHistory } from "react-router-dom";
+import axiosWithAuth from "../util/axiosWithAuth";
 
 const initialColor = {
   color: "",
@@ -7,24 +8,50 @@ const initialColor = {
 };
 
 const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
+  console.log("Here is the data! ", colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const { id } = useParams();
+  const { push } = useHistory();
 
+  
   const editColor = color => {
     setEditing(true);
     setColorToEdit(color);
   };
 
-  const saveEdit = e => {
+  const saveEdit = (e) => {
     e.preventDefault();
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
+    // make a PUT request to edit the item
+    axiosWithAuth()
+      .put(`/color/${colors.id}`, colors)
+      .then(res => {
+        console.log(res.data)
+        setColorToEdit(res.data);
+        push(`/${colors.id}`);
+      })
+      .catch(err =>
+        console.error(
+          "ColorList.js: handleSubmit: ",
+          err.message,
+          err.response
+        )
+      );
   };
 
   const deleteColor = color => {
-    // make a delete request to delete this color
+    axiosWithAuth()
+      .delete(`/colors/${color.id}`)
+      .then(res => {
+        setEditing(res.data);
+        push(`/color-list`);
+      })
+      .catch(err =>
+        console.error("Item.js: handleDelete: err: ", err.message, err.response)
+      );
   };
 
   return (
