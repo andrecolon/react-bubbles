@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import axiosWithAuth from "../util/axiosWithAuth";
 
 const initialColor = {
   color: "",
@@ -7,10 +8,13 @@ const initialColor = {
 };
 
 const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
+  // console.log("Here is the data! ", colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const { id } = useParams();
+  // const { push } = useHistory();
 
+  
   const editColor = color => {
     setEditing(true);
     setColorToEdit(color);
@@ -18,14 +22,50 @@ const ColorList = ({ colors, updateColors }) => {
 
   const saveEdit = e => {
     e.preventDefault();
+   
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
-  };
+    // make a PUT request to edit the item
+
+    axiosWithAuth()
+      .put(`/colors/${colorToEdit.id}`, colorToEdit)
+      .then(res => { 
+        setColorToEdit(res.data) 
+      axiosWithAuth()
+          .get('/colors')
+          .then(res => {
+            console.log('BubblePage.js=>.get=>res.data', res.data)
+            updateColors(res.data)
+          })
+      })
+      .catch(err =>
+        console.error(
+          "ColorList.js: handleSubmit: ",
+          err.message,
+          err.response
+        )
+      );
+  }
+
 
   const deleteColor = color => {
-    // make a delete request to delete this color
+    axiosWithAuth()
+      .delete(`/colors/${color.id}`)
+      .then(res => {
+        axiosWithAuth()
+          .get('/colors')
+          .then(res => {
+            console.log('BubblePage.js=>.get=>res.data', res.data)
+            updateColors(res.data)
+          })
+      })
+      .catch(err =>
+        console.error("ColorList.js: handleDelete: err: ", err.message, err.response)
+      );
   };
+
+
 
   return (
     <div className="colors-wrap">
