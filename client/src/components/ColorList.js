@@ -20,7 +20,7 @@ const ColorList = ({ colors, updateColors }) => {
     setColorToEdit(color);
   };
 
-  const saveEdit = (e, id) => {
+  const saveEdit = e => {
     e.preventDefault();
    
     // Make a put request to save your updated color
@@ -29,18 +29,15 @@ const ColorList = ({ colors, updateColors }) => {
     // make a PUT request to edit the item
 
     axiosWithAuth()
-      .put(`/color/${colors.id}`, colors)
-      .then(res => {
-        console.log(res.data)
-        const newColors = colors.map(clr => {
-          if (clr.id === colors.id) {
-            return colors;
-          }
-          return colors;
-        });
-        // updateColors(res.data);
-        setEditing(newColors)
-        push(`/${colors.id}`);
+      .put(`/colors/${colorToEdit.id}`, colorToEdit)
+      .then(res => { 
+        setColorToEdit(res.data) 
+      axiosWithAuth()
+          .get('/colors')
+          .then(res => {
+            console.log('BubblePage.js=>.get=>res.data', res.data)
+            updateColors(res.data)
+          })
       })
       .catch(err =>
         console.error(
@@ -49,7 +46,6 @@ const ColorList = ({ colors, updateColors }) => {
           err.response
         )
       );
-    console.log("whats the value? ", e.target.value)
   }
 
 
@@ -57,13 +53,19 @@ const ColorList = ({ colors, updateColors }) => {
     axiosWithAuth()
       .delete(`/colors/${color.id}`)
       .then(res => {
-        setEditing(res.data);
-        push(`/color`);
+        axiosWithAuth()
+          .get('/colors')
+          .then(res => {
+            console.log('BubblePage.js=>.get=>res.data', res.data)
+            updateColors(res.data)
+          })
       })
       .catch(err =>
         console.error("ColorList.js: handleDelete: err: ", err.message, err.response)
       );
   };
+
+
 
   return (
     <div className="colors-wrap">

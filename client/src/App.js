@@ -25,7 +25,8 @@ function App() {
         </nav>
         <Switch>
           <PrivateRoute exact path="/Bubbles" component={BubblesPage} />
-          <Route path="/login" component={Login}/>
+          <Route exact path="/" render={(props) => <Login {...props} />} />
+          {/* <Route path="/login" component={Login}/> */}
           <Route component={Login} />
         </Switch>
 
